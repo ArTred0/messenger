@@ -1,0 +1,148 @@
+{% load static %}
+{% load cust_filters %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static '/css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <title>{{ title }}</title>
+</head>
+<body style="background-color: #d2d2d2;">
+    <div class="m-form-cont shadow-lg">
+        <h3 class="text-center mb-4">{{ title }}</h3>
+        <form action="" method="post">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                <label for="id_imie" class="col-form-label">Imię:</label>
+                <input type="text" class="form-control" id="id_imie" name="imie"
+                value="{% if form.imie.value %}{{ form.imie.value }}{% endif %}"
+                required>
+                {% if form.imie.errors %}
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        {{ form.imie.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label for="id_nazwisko" class="form-label">Nazwisko:</label>
+                <input type="text" class="form-control" id="id_nazwisko" name="nazwisko"
+                value="{% if form.nazwisko.value %}{{ form.nazwisko.value }}{% endif %}" 
+                required>
+                {% if form.nazwisko.errors %}
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        {{ form.nazwisko.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="mb-3">
+                <label for="id_klasa" class="form-label m-rad-lbl">Klasa:</label>
+                    
+                <input class="form-check-input" type="radio" value="1" id="id_klasa1" name="klasa" {% if form.klasa.value and form.klasa.value|eq:"1" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="cl1">1</label>
+
+                <input class="form-check-input" type="radio" value="2" id="id_klasa2" name="klasa" {% if form.klasa.value and form.klasa.value|eq:"2" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="cl2">2</label>
+
+                <input class="form-check-input" type="radio" value="3" id="id_klasa3" name="klasa" {% if form.klasa.value and form.klasa.value|eq:"3" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="cl3">3</label>
+
+                <input class="form-check-input" type="radio" value="4" id="id_klasa4" name="klasa" {% if form.klasa.value and form.klasa.value|eq:"4" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="cl4">4</label>
+
+                <input class="form-check-input" type="radio" value="5" id="id_klasa5" name="klasa" {% if form.klasa.value and form.klasa.value|eq:"5" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="cl5">5</label>
+
+                {% if form.klasa.errors %}
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        {{ form.klasa.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+
+            <div class="mb-3">
+                <label for="id_kierunek" class="form-label m-rad-lbl">Kierunek:</label>
+
+                <input class="form-check-input" type="radio" value="TI" id="id_inf" name="kierunek" {% if form.kierunek.value and form.kierunek.value|eq:"TI" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="inf">TI</label>
+                
+                <input class="form-check-input" type="radio" value="TL" id="id_log" name="kierunek" {% if form.kierunek.value and form.kierunek.value|eq:"TL" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="log">TL</label>
+
+                <input class="form-check-input" type="radio" value="TM" id="id_mec" name="kierunek" {% if form.kierunek.value and form.kierunek.value|eq:"TM" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="mec">TM</label>
+                
+                <input class="form-check-input" type="radio" value="TN" id="id_naw" name="kierunek" {% if form.kierunek.value and form.kierunek.value|eq:"TN" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="naw">TN</label>
+
+                {% if form.kierunek.errors %}
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        {{ form.kierunek.errors }}
+                    </div>
+                {% endif %}
+                
+            </div>
+
+
+            <div class="mb-3">
+                <label for="id_group" class="m-rad-lbl">Grupa:</label>
+
+                <input class="form-check-input" type="radio" value="1" id="gr1" name="grupa" {% if form.grupa.value and form.grupa.value|eq:"1" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="gr1">1</label>
+
+                <input class="form-check-input" type="radio" value="2" id="gr1" name="grupa" {% if form.grupa.value and form.grupa.value|eq:"2" %}checked{% endif %}>
+                <label class="m-rad-lbl" for="gr2">2</label>
+
+                {% if form.grupa.errors %}
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        {{ form.grupa.errors }}
+                    </div>
+                {% endif %}
+
+            </div>
+
+
+            <hr class='mt-3'>
+
+
+            <div class="mb-3">
+                <label class="form-label" for="id_password1">Wymyśl hasło:</label>
+                <input class="form-control" type="password" id="id_password1" name="password1" required>
+                {% if form.password1.errors %}
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        {{ form.password1.errors }}
+                    </div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="id_password2">Powtórz hasło:</label>
+                <input class="form-control" type="password" id="id_password2" name="password2" required>
+                {% if form.password2.errors %}
+                    <div class="mt-3 alert alert-danger alert-dismissible fade show">
+                        {{ form.password2.errors }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="mt-4 d-flex flex-column align-items-center">
+                <button type="submit" class="btn btn-primary mb-4">Założyć konto</button>
+                <div>
+                    <a href="{% url 'users:login' %}">Już masz konto? Zaloguj się!</a>
+                </div>
+            </div>
+            
+        </form>
+
+
+    </div>
+    <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+</body>
+</html>
