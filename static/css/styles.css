@@ -12,3 +12,286 @@
 .m-rad-lbl {
     margin-right: 0.8em;
 }
+
+nav {
+    height: 5em;
+    width: 100vw;
+    padding: 0.5em;
+    justify-content: space-between;
+    /* align-items: center; */
+    background-color: #d2d2d2;
+}
+
+nav img {
+    max-height: 100%;
+    transition: all ease 0.4s;
+}
+nav img:hover {
+    transform: scale(1.1);
+}
+
+nav .dropdown {
+    align-self: center;
+    color: blueviolet;
+}
+
+.circle {
+    height: 3.5em;
+    width: 3.5em;
+    border-radius: 50%;
+    background-color: blueviolet;
+}
+
+aside {
+    position: absolute;
+    top: 5em;
+    left: 0em;
+    height: calc(100vh - 5em);
+    overflow-y: auto;
+    width: 20vw;
+    background-color: #bdbdbd;
+}
+
+/* Styles for chat preview plate { */
+
+.no-chats {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 2em;
+    color: #969696
+}
+
+.chat-href {
+    color: black;
+    text-decoration: none;
+}
+
+.chat-preview {
+    width: 90%;
+    margin: 5%;
+    padding: 0.8em;
+    background-color: #f0f0f0;
+    border-radius: 1em;
+    flex-direction: column;
+    transition: all ease 0.3s;
+}
+
+.chat-preview:hover {
+    transform: scale(1.04);
+}
+
+.chat-icon-n-name {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 3em;
+    align-items: center;
+}
+
+.chat-icon-n-name h6 {
+    padding: 0 0.7em;
+    margin: 0;
+}
+
+.chat-icon {
+    width: 3em;
+    height: 3em;
+    margin-right: 0.6em;
+}
+
+.is-selected-identifier {
+    height: 0.25em;
+    margin-top: 0.4em;
+    background-color: blueviolet;
+}
+
+.last-message {
+    font-size: small;
+    color: #696969;
+}
+
+/* }*/
+
+
+
+/* Main chat view styles { */
+
+main {
+    position: absolute;
+    left: 20vw;
+    top: 5em;
+    width: 79vw;
+    height: calc(100vh - 5em - 4em);
+    overflow-y: auto;
+    padding: 0.8em;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Day following messages were sended { */
+.date-start {
+    font-size: small;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+}
+
+.date-start p {
+    margin: 0;
+    padding: 0.3em 0.4em;
+    background: #737373;
+    border-radius: 0.6em;
+}
+/* } */
+
+/* Styles for line with a message { */
+.pre-mes-av {
+    width: 2.5em;
+    margin-right: 1em;
+}
+
+.pre-mes-av img {
+    border-radius: 50%;
+}
+
+.message {
+    margin-top: 2em;
+}
+
+.message-next {
+    margin-top: 0.6em;;
+}
+
+.message-body {
+    background: #e9e9e9;
+    padding: 0.8em;
+    border-radius: 1em;
+    max-width: 80%;
+}
+
+.message-sender {
+    margin-bottom: 0.7em;
+    font-weight: 600;
+}
+
+.message-body p, .my-message-body p {
+    margin-bottom: 0.6em;
+}
+
+.time-sended {
+    display: flex;
+    justify-content: end;
+    align-items: end;
+}
+
+.time-sended p {
+    margin: 0;
+    font-size: small;
+    color: #696969
+}
+/* } */
+
+
+
+/* Same as above but for messages, which was sended by user { */
+
+
+.my-message-body {
+    background: blueviolet;
+    color: white;
+    padding: 0.8em;
+    border-radius: 1em;
+    max-width: 80%;
+}
+
+.my-pre-mes-av {
+    width: 2.5em;
+    margin-left: 1em;
+}
+
+.my-pre-mes-av img {
+    border-radius: 50%;
+}
+
+.my-time-sended {
+    justify-content: start;
+}
+
+.my-time-sended p {
+    color: #c4c4c4;
+}
+
+
+/* Styles for message input block { */
+.message-input-block {
+    position: absolute;
+    top: calc(100vh - 4.8em);
+    left: 20vw;
+    height: 4.8em;
+    padding: 0 0.7em;
+    justify-content: end;
+    width: 79vw;
+}
+
+.sendbtn {
+    background: blueviolet;
+    color: white;
+    border-radius: 50%;
+    margin-left: 0.7em;
+    transition: all ease 0.2s;
+}
+
+
+.sendbtn:hover {
+    background: #8021C4;
+    color: white;
+}
+
+.sendbtn:active {
+    background-color: #8021C4 !important;
+    color: white !important;
+}
+
+.create-chat-btn {
+    position: fixed;
+    left: 1em;
+    bottom: 1em;
+    background: blueviolet;
+    color: white;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    padding: 0;
+    transition: all ease 0.2s;
+}
+
+.create-chat-btn:hover {
+    background: #8021C4;
+    color: white;
+}
+
+.create-chat-btn:active {
+    background-color: #8021C4 !important;
+    color: white !important;
+}
+
+.create-chat-btn img {
+    width: 2em;
+    height: 2em;
+}
+
+.tab-content {
+    padding: 0.5em;
+}
+
+.form-row {
+    margin-bottom: 1em;
+}
+
+.form-column {
+    display: flex;
+    flex-direction: column;
+}

@@ -5,7 +5,7 @@ import messenger.settings as settings
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('users.urls', namespace='users'))
+    path('', include('users.urls', namespace='users'))
 ]
 
 if settings.DEBUG:

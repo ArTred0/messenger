@@ -1,7 +1,9 @@
 {% load static %}
+{% load cust_filters %}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,11 +11,360 @@
     <link rel="stylesheet" href="{% static 'css/styles.css' %}">
     <title>{{ title }}</title>
 </head>
-<body>
 
-    <h2>User info:</h2>
-    {{ user.imie }} {{ user.nazwisko }} {{ user.klasa }} {{ user.kierunek }}, Grupa: {{ user.grupa }}
-    
+<body>
+    <nav class="d-flex shadow-sm">
+        <div class="d-flex">
+            <a class="" href="">
+                <img src="{% static 'img/logo-zsm.png' %}" alt="Logo" class="img-fluid">
+            </a>
+            <div class="d-flex align-items-center">
+                <h3 class="ms-3">ZSMessenger</h3>
+            </div>
+
+        </div>
+
+        <div class="circle shadow border border-black"></div>
+
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Profil
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Informacja</a></li>
+                <li><a class="dropdown-item" href="#">Panel administracyjny</a></li>
+                <li><a class="dropdown-item" href="#">Wylogować się</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <aside class="shadow">
+
+        {% if chats %}
+            
+            {% for chat in chats %}
+                <a href="{% url 'users:chat' chat.nazwa %}" class="chat-href">
+                    <div class="m-3 d-flex shadow chat-preview">
+                        <div class="d-flex chat-icon-n-name">
+                            <img src="{{ chat.icon.url }}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                            <div class="chat-name">
+                                <h6>{{ chat.nazwa }}</h6>
+                                {% if user.ostatni_czat == chat.nazwa %}
+                                    <div class="is-selected-identifier"></div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="chat-last-message mt-2">
+                            <p class="m-0 last-message">{{ chat|get_last_message }}</p>
+                        </div>
+                    </div>
+                </a>
+            {% endfor %}
+
+        {% else %}
+            <div class="no-chats">
+                <h5>Jeszcze nie masz żadnych czatów. Możesz ich stworzyć używając przycisku niżej</h5>
+                
+            </div>
+                
+        {% endif %}
+
+        {% comment %} <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/logo-zsm.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <div class="chat-name">
+                        <h6>Pierwsza informatyczna</h6>
+                        <div class="is-selected-identifier"></div>
+                    </div>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Adam Sobhi: Jutro zbieramy pie...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/default_chat.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Pierwsza informatyczna grupa 2</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Artur Miroshnichenko: Kto jaką oce...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/R.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Programisty</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Nikodem Maliszewski: Hej, co bę...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/R.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Programisty</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Nikodem Maliszewski: Hej, co bę...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/R.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Programisty</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Nikodem Maliszewski: Hej, co bę...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/R.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Programisty</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Nikodem Maliszewski: Hej, co bę...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/R.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Programisty</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Nikodem Maliszewski: Hej, co bę...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/R.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Programisty</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Nikodem Maliszewski: Hej, co bę...</p>
+                </div>
+            </div>
+        </a>
+        <a href="#" class="chat-href">
+            <div class="m-3 d-flex shadow chat-preview">
+                <div class="d-flex chat-icon-n-name">
+                    <img src="{% static 'img/R.png' %}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                    <h6>Programisty</h6>
+                </div>
+                <div class="chat-last-message mt-2">
+                    <p class="m-0 last-message">Nikodem Maliszewski: Hej, co bę...</p>
+                </div>
+            </div>
+        </a> {% endcomment %}
+
+        <button type="button" class="btn create-chat-btn shadow-lg" data-bs-toggle="modal"
+            data-bs-target="#chatCreationModal">
+            <img src="{% static 'img/pen-field.svg' %}" alt="pen" class="pen">
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" id="chatCreationModal" tabindex="-1" aria-labelledby="chatCreationModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="chatCreationModalLabel">Stworzyć czat</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="group-tab" data-bs-toggle="tab"
+                                    data-bs-target="#group-tab-pane" type="button" role="tab"
+                                    aria-controls="group-tab-pane" aria-selected="true">Grupa</button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="private-tab" data-bs-toggle="tab"
+                                    data-bs-target="#private-tab-pane" type="button" role="tab"
+                                    aria-controls="private-tab-pane" aria-selected="false">Czat osobowy</button>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="group-tab-pane" role="tabpanel"
+                                aria-labelledby="group-tab" tabindex="0">
+                                <form action="{% url 'users:add_chat' %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="form-row">
+                                        <label for="gr-n" class="form-label">Nazwa grupy:</label>
+                                        <input type="text" class="form-control" id="gr-n" name="group_name">
+                                    </div>
+                                    <div class="form-column">
+                                        <label>Uczestnicy:</label>
+
+                                        {% if user.pryjaciole.0 %}
+                                            {% for user in user.przyjaciole %}
+                                                <div class="form-row">
+                                                    <input type="checkbox" class="form-check-input" id="{{ user }}" name="{{ user }}" value="1">
+                                                    <label for="{{ user }}" class="form-check-label">{{ user|imie }}</label>
+                                                </div>
+                                            {% endfor %}
+                                        {% else %}
+                                            <p class="mt-4">Nie masz jeszcze przyjaciole. Możesz dodać uczęstników później</p>
+                                        {% endif %}
+                                        
+
+                                            
+                                        {% comment %} <div class="form-row">
+                                            <input type="checkbox" class="form-check-input" id="c1" name="name" value="1">
+                                            <label for="c1" class="form-check-label">1</label>
+                                        </div>
+                                        <div class="form-row">
+                                            <input type="checkbox" class="form-check-input" id="c2" name="name" value="2">
+                                            <label for="c2" class="form-check-label">2</label>    
+                                        </div> {% endcomment %}
+
+                                        
+                                    </div>
+
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                </form>
+                            </div>
+                            <div class="tab-pane fade" id="private-tab-pane" role="tabpanel"
+                                aria-labelledby="private-tab" tabindex="0">
+                                <form action="#">
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary">Save changes</button>
+                    </div> -->
+                </div>
+            </div>
+        </div>
+
+
+    </aside>
+
+    <main>
+
+        {% if messages_ %}
+        
+            {% for message_ in messages_ %}
+                {% if message_.nadawca.imie|eq:user.pelne_imie %}
+                    <div class="d-flex message flex-row-reverse">
+                        <div class="my-pre-mes-av">
+                            <img src="{{ user.avatar.url }}" class="img-fluid" alt="Avatar">
+                        </div>
+                        <div class="my-message-body shadow-sm border border-black" onclick="delete_message(this)">
+                            <input type="hidden" value="{{ message_.id }}">
+                            <p>{{ message_.tekst }}</p>
+                            <div class="time-sended my-time-sended">
+                                <p>{{ message_.czas_wysylki }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="d-flex message">
+                        <div class="pre-mes-av">
+                            <img src="{{ message_.nadawca.avatar }}" class="img-fluid" alt="Avatar">
+                        </div>
+
+                        <div class="message-body shadow-sm border border-black" onclick="delete_message(this)">
+                            <input type="hidden" value="{{ message_.id }}">
+                            <p class="message-sender">{{ message_.nadawca.imie }}</p>
+                            <p>{{ message_.tekst }}</p>
+                            <div class="time-sended">
+                                <p>{{ message_.czas_wysylki }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endif %}
+                
+            {% endfor %}
+        
+        {% else %}
+            <div class="d-flex justify-content-center align-items-center" style="height: 100%; width: 100%; color: #bebebe;">
+                <h2>Na razie tu nie ma żadnych powiadomień :(</h2>
+                
+            </div>
+
+        {% endif %}
+
+
+
+
+
+        {% comment %} <div class="date-start">
+            <p class="d-inline">08 października</p>
+        </div>
+
+        <div class="d-flex message">
+            <div>
+                <img src="{% static 'img/logo-zsm.png' %}" class="img-fluid pre-mes-av" alt="Avatar">
+            </div>
+
+            <div class="message-body shadow-sm border border-black">
+                <p class="message-sender">Adam Sobhi</p>
+                <p>Jutro zbieramy pieniędzy na wycieczkę, kto ma jakiś propozycje? Np. kino, restauracja, cokołwiek</p>
+                <div class="time-sended">
+                    <p>18:37 | 08/10/24</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex message flex-row-reverse">
+            <div class="my-pre-mes-av">
+                <img src="{% static 'img/default_avatar.png' %}" style="border-radius: 50%;" class="img-fluid" alt="Avatar">
+            </div>
+            <div class="my-message-body shadow-sm border border-black">
+                <p>Proponuję pójść do kina, będzie ciekawo, co najmniej lepiej niż w jakiejś restauracji</p>
+                <div class="time-sended my-time-sended">
+                    <p>19:01 | 08/10/24</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="d-flex message-next flex-row-reverse">
+            <div class="my-pre-mes-av"></div>
+            <div class="my-message-body shadow-sm border border-black">
+                <p>Kto jak myśli?</p>
+                <div class="time-sended my-time-sended">
+                    <p>19:39 | 08/10/24</p>
+                </div>
+            </div>
+        </div> {% endcomment %}
+
+    </main>
+
+    <div class="message-input-block">
+        <hr>
+        <form action="/" method="post">
+            {% csrf_token %}
+            <!-- <div>
+                <input type="file" class="image-input" accept="image/jpeg, image/png" placeholder="0">
+            </div> -->
+            <div class="d-flex">
+                <input type="text" class="form-control" placeholder="Napisz wiadomość tu..." name="message_text">
+                <button type="submit" class="btn sendbtn">➤</button>
+            </div>
+        </form>
+    </div>
+
     <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'js/scripts.js' %}"></script>
 </body>
+
 </html>
