@@ -1,0 +1,86 @@
+{% load cust_filters %}
+
+
+<div class="modal fade" id="chatCreationModal" tabindex="-1" aria-labelledby="chatCreationModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="chatCreationModalLabel">Dodać czat</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active" id="search-tab" data-bs-toggle="tab"
+                            data-bs-target="#search-tab-pane" type="button" role="tab"
+                            aria-controls="search-tab-pane" aria-selected="true">Szukaj</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="add-tab" data-bs-toggle="tab"
+                            data-bs-target="#add-tab-pane" type="button" role="tab"
+                            aria-controls="add-tab-pane" aria-selected="true">Stwórz</button>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade" id="search-tab-pane" role="tabpanel"
+                        aria-labelledby="private-tab" tabindex="0">
+                        <label for=""></label>
+                        <input type="text">
+                    </div>
+                        <div class="tab-pane fade" id="add-tab-pane" role="tabpanel" aria-labelledby="private-tab" tabindex="0">
+                            <ul class="nav nav-tabs" id="innerTab" role="tablist">
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link active" id="group-tab" data-bs-toggle="tab"
+                                        data-bs-target="#group-tab-pane" type="button" role="tab"
+                                        aria-controls="group-tab-pane" aria-selected="true">Grupa</button>
+                                </li>
+                                <li class="nav-item" role="presentation">
+                                    <button class="nav-link" id="private-tab" data-bs-toggle="tab"
+                                        data-bs-target="#private-tab-pane" type="button" role="tab"
+                                        aria-controls="private-tab-pane" aria-selected="false">Czat osobowy</button>
+                                </li>
+                            </ul>
+                            <div class="tab-content" id="innerTabContent">
+                                <div class="tab-pane fade show active" id="group-tab-pane" role="tabpanel" aria-labelledby="group-tab" tabindex="0">
+                                    <form action="{% url 'users:add_chat' %}" method="post" class="mt-4">
+                                        {% csrf_token %}
+                                        <div class="form-row">
+                                            <label for="gr-n" class="form-label">Nazwa grupy:</label>
+                                            <input type="text" class="form-control" id="gr-n" name="group_name">
+                                        </div>
+                                        <hr>
+                                        <div class="form-column">
+                                            <label>Uczestnicy:</label>
+                                            <div class="ps-4">
+                                                {% if user.pryjaciole.0 %}
+                                                    {% for user in user.przyjaciole %}
+                                                        <div class="form-row">
+                                                            <input type="checkbox" class="form-check-input" id="{{ user }}" name="{{ user }}" value="1">
+                                                            <label for="{{ user }}" class="form-check-label">{{ user|imie }}</label>
+                                                        </div>
+                                                    {% endfor %}
+                                                {% else %}
+                                                    <p class="mt-2">Nie masz jeszcze przyjaciele. Możesz dodać uczęstników później</p>
+                                                {% endif %}
+                                            </div>
+                                                
+                                        </div>
+
+                                        <button type="submit" class="btn btn-primary">Stwórz</button>
+                                    </form>
+                                </div>
+                                <div class="tab-pane fade" id="private-tab-pane" role="tabpanel" aria-labelledby="private-tab" tabindex="0">
+                                    <form action="#">
+                                    
+                                    </form>
+                                </div>
+                            </div>
+                        
+                            
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

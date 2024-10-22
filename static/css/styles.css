@@ -9,9 +9,9 @@
     margin-right: 1em;
 }
 
-.m-rad-lbl {
+/* .m-rad-lbl {
     margin-right: 0.8em;
-}
+} */
 
 nav {
     height: 5em;
@@ -153,10 +153,6 @@ main {
     margin-right: 1em;
 }
 
-.pre-mes-av img {
-    border-radius: 50%;
-}
-
 .message {
     margin-top: 2em;
 }
@@ -210,10 +206,6 @@ main {
 .my-pre-mes-av {
     width: 2.5em;
     margin-left: 1em;
-}
-
-.my-pre-mes-av img {
-    border-radius: 50%;
 }
 
 .my-time-sended {
@@ -288,10 +280,54 @@ main {
 }
 
 .form-row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
     margin-bottom: 1em;
 }
 
 .form-column {
+    width: 100%;
     display: flex;
     flex-direction: column;
+    margin-bottom: 1em;
+}
+
+
+
+
+
+.pencil-btn {
+    background-color: #aaa;
+    border-radius: 50%;
+    padding: 0.2em;
+    height: 2.3em;
+    width: 2.3em;
+    cursor: pointer;
+    transition: all ease 0.2s;
+}
+
+.w-100 {
+    width: 100%;
+}
+
+.w-33 {
+    width: 33.333333%;
+}
+
+.bold {
+    font-weight: 500;
+}
+
+.all-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.search-btn {
+    height: 2.2em;
+    width: 2.2em;
+    padding: 0.3em;
+    color: #fff
 }

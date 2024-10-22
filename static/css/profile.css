@@ -1,0 +1,120 @@
+main {
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 5em);
+    background-color: #e6e6e6;
+}
+
+.profile-card {
+    background-color: #fff;
+    margin: 10vh 13vw;
+    border-radius: 2em;
+    padding: 2em;
+}
+
+.profile-img {
+    height: 11em;
+    margin-bottom: 2em;
+}
+
+/* h2 {
+    margin: ;
+} */
+
+h5 {
+    font-weight: 400;
+    margin-bottom: 1.5em;
+}
+
+
+
+.no-link {
+    color: #000;
+    text-decoration: none;
+}
+
+.mini-card-req {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.4em;
+    margin-bottom: 1.4em;
+    padding: 0.8em;
+    min-height: 4.6em;
+    transition: all ease 0.3s;
+}
+
+.mini-card {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #fff;
+    border-radius: 1.4em;
+    margin-bottom: 1.4em;
+    padding: 0.8em;
+    min-height: 4.6em;
+    transition: all ease 0.3s;
+}
+
+.mini-card a {
+    display: flex;
+    justify-content: space-evenly;
+    color: #000;
+    text-decoration: none;
+}
+
+.mini-card:hover, .mini-card-req:hover {
+    transform: scale(1.03);
+}
+
+.friend_avatar {
+    height: 3em;
+    margin-right: 0.8em;
+}
+
+.mini-card h6, .mini-card-req h6 {
+    margin: auto 0;
+    height: auto;
+
+}
+
+.add-fr-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.4em;
+    margin-bottom: 1.4em;
+    min-height: 4.6em;
+    background-color: #fff;
+    border: none;
+    transition: all ease 0.3s;
+}
+.add-fr-btn:hover {
+    transform: scale(1.05);
+}
+.plus {
+    height: 2.5em !important;
+}
+
+.no-border {
+    border: none;
+}
+
+.delete_friend {
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    width: 2em;
+    border-radius: 50%;
+    transition: all ease 0.3s;
+}
+.delete_friend:hover {
+    transform: scale(1.1);
+    background-color: #bb2b3b;
+}
+.delete_friend svg {
+    transition: all ease 0.2s;
+}
+.delete_friend svg:hover {
+    fill: #fff !important
+}

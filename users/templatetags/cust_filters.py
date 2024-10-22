@@ -28,6 +28,28 @@ def get_last_message(chat):
 #     return user.avatar.url
 
 @register.filter
-def imie(username):
-    # user = User.objects.get(username=username)
-    return f"{username.split('_')[0].capitalize()} {username.split('_')[1].capitalize()}"
+def imie(id):
+    user = User.objects.get(id=id)
+    return user.pelne_imie()
+
+
+# @register.filter
+# def user(id):
+#     return User.objects.get(id=id)
+
+
+@register.filter
+def gt(value1, value2):
+    return value1 > value2
+
+@register.filter
+def gte(value1, value2):
+    return value1 >= value2
+
+@register.filter
+def lt(value1, value2):
+    return value1 < value2
+
+@register.filter
+def lte(value1, value2):
+    return value1 <= value2
