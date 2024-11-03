@@ -2,49 +2,101 @@
 {% load cust_filters %}
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-bs-theme="{% if request.user.motyw %}light{% else %}dark{% endif %}" id="html">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    {% if request.user.motyw %}
+    <link rel="stylesheet" href="{% static 'css/light.css' %}" id="mainThemeLink">
+    {% else %}
+    <link rel="stylesheet" href="{% static 'css/dark.css' %}" id="mainThemeLink">
+    {% endif %}
     
+    {% if request.user.kierunek == 'TI' %}
+        <link rel="stylesheet" href="{% static 'css/TI.css' %}">
+    {% elif request.user.kierunek == 'TL' %}
+        <link rel="stylesheet" href="{% static 'css/TL.css' %}">
+    {% elif request.user.kierunek == 'TN' %}
+        <link rel="stylesheet" href="{% static 'css/TN.css' %}">
+    {% elif request.user.kierunek == 'TM' %}
+        <link rel="stylesheet" href="{% static 'css/TM.css' %}">
+    {% endif %}
+        
     {% block head %}
     {% endblock head %}
+
     <title>{{ title }}</title>
   </head>
 
   <body>
     <nav class="d-flex">
         <div class="d-flex w-33">
-            <a href="{% url 'users:home' %}">
-                <img src="{% static 'img/logo-zsm.png' %}" alt="Logo" class="img-fluid">
+            <a href="{% url 'users:home' %}" class="d-flex align-items-center">
+                <h3 class="ms-3 shrinky">ZSMessenger</h3>
             </a>
-            <div class="d-flex align-items-center">
-                <h3 class="ms-3">ZSMessenger</h3>
-            </div>
-
         </div>
 
         <div class="w-33 all-center">
-            <div class="circle shadow border border-black"></div>
+            <a href="https://www.zsm.edu.pl" target="_blank" class="h-100">
+                <img src="{% static 'img/logo-zsm.png' %}" alt="Logo" class="img-fluid">
+            </a>
         </div>
 
         <div class="w-33 d-flex justify-content-end align-items-center">
+            {% comment %} <input type="checkbox" class="btn-check" id="themeToggleInp" autocomplete="off"> {% endcomment %}
+            <button type="button" class="btn" id="themeToggle" onclick="toggle_theme(this)">
+                <span></span>
+                {% if request.user.motyw %}Jasny{% else %}Ciemny{% endif %}
+            </button>
             <div class="dropdown">
-                <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown"
+                <button class="btn mbtn dropdown-toggle" type="button" data-bs-toggle="dropdown"
                     aria-expanded="false">
-                    Profil{% if user.zapyty_o_przyjacielstwie.do_przyjecia %}  <span class="badge text-bg-danger">{{ user.zapyty_o_przyjacielstwie.do_przyjecia|length }}</span>{% endif %}
+                    Profil{% if request.user.zapyty_o_przyjacielstwie.do_przyjecia %}  <span class="badge text-bg-danger">{{ request.user.zapyty_o_przyjacielstwie.do_przyjecia|length }}</span>{% endif %}
                         
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{% url 'users:profile' %}">Informacja  {% if user.zapyty_o_przyjacielstwie.do_przyjecia %}  <span class="badge text-bg-danger">{{ user.zapyty_o_przyjacielstwie.do_przyjecia|length }}</span>{% endif %}</a></li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'users:profile' %}">
+                            <span>
+                                <svg width="1.3em" height="1.3em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="infoIcon">
+                                    <g id="Complete">
+                                        <g id="info-circle">
+                                            <g>
+                                                <circle cx="12" cy="12" data-name="--Circle" fill="none" id="_--Circle" r="10" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/>
+                                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="12" y2="16"/>
+                                                <line fill="none" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" x1="12" x2="12" y1="8" y2="8"/>
+                                            </g>
+                                        </g>
+                                    </g>
+                                </svg>
+                            </span> Informacja  {% if request.user.zapyty_o_przyjacielstwie.do_przyjecia %}  <span class="badge text-bg-danger">{{ request.user.zapyty_o_przyjacielstwie.do_przyjecia|length }}</span>{% endif %}
+                        </a>
+                    </li>
                     
                     {% if user.is_staff %}
-                        <li><a class="dropdown-item" href="/admin">Panel administracyjny</a></li>
+                        <li>
+                            <a class="dropdown-item" href="/admin">
+                                <span>
+                                    <svg width="1.3em" height="1.3em" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" id="adminPanelIcon">
+                                        <path d="M22.6,4.2h-.628a.415.415,0,0,1-.38-.27l0-.005a.415.415,0,0,1,.08-.458l.444-.444a.4.4,0,0,0,0-.571l-.561-.561a.4.4,0,0,0-.571,0l-.444.444a.413.413,0,0,1-.458.079l-.006,0a.416.416,0,0,1-.269-.38V1.4a.4.4,0,0,0-.4-.4H18.6a.4.4,0,0,0-.4.4v.628a.416.416,0,0,1-.269.38l-.006,0a.413.413,0,0,1-.458-.079l-.444-.444a.4.4,0,0,0-.571,0l-.561.561a.4.4,0,0,0,0,.571l.444.444a.415.415,0,0,1,.08.458l0,.005a.415.415,0,0,1-.38.27H15.4a.4.4,0,0,0-.4.4V5.4a.4.4,0,0,0,.4.4h.628a.416.416,0,0,1,.38.269l0,.006a.415.415,0,0,1-.08.458l-.444.444a.4.4,0,0,0,0,.571l.561.561a.4.4,0,0,0,.571,0l.444-.444a.415.415,0,0,1,.458-.08l.006,0a.414.414,0,0,1,.269.38V8.6a.4.4,0,0,0,.4.4H19.4a.4.4,0,0,0,.4-.4V7.968a.414.414,0,0,1,.269-.38l.006,0a.415.415,0,0,1,.458.08l.444.444a.4.4,0,0,0,.571,0l.561-.561a.4.4,0,0,0,0-.571l-.444-.444a.415.415,0,0,1-.08-.458l0-.006a.416.416,0,0,1,.38-.269H22.6a.4.4,0,0,0,.4-.4V4.6A.4.4,0,0,0,22.6,4.2ZM19,6.2A1.2,1.2,0,1,1,20.2,5,1.2,1.2,0,0,1,19,6.2ZM18,11a1,1,0,0,0-.983.818C16.536,12.245,14.074,13,10,13c-1.676,0-5.975-.3-7-1.171V6.04A23.285,23.285,0,0,0,10,7c.708,0,1.4-.022,2.065-.065a1,1,0,0,0-.13-2C11.316,4.979,10.668,5,10,5A17.475,17.475,0,0,1,3.272,4,17.475,17.475,0,0,1,10,3c.668,0,1.316.021,1.935.062a1,1,0,0,0,.13-2C11.4,1.022,10.708,1,10,1,8.5,1,1,1.145,1,4V20c0,2.855,7.5,3,9,3s9-.145,9-3V12A1,1,0,0,0,18,11Zm-1,8.832c-.518.43-2.971,1.168-7,1.168s-6.482-.738-7-1.168V14.047A22.2,22.2,0,0,0,10,15a22.553,22.553,0,0,0,7-.953Z"/>
+                                    </svg>
+                                </span>
+                                 Panel administracyjny
+                            </a>
+                        </li>
                     {% endif %}
                         
-                    <li><a class="dropdown-item" href="{% url 'users:logout' %}">Wylogować się</a></li>
+                    <li>
+                        <a class="dropdown-item" href="{% url 'users:logout' %}">
+                            <span>
+                                <svg width="1.3em" height="1.3em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" id="logoutIcon">
+                                    <path d="M15 16.5V19C15 20.1046 14.1046 21 13 21H6C4.89543 21 4 20.1046 4 19V5C4 3.89543 4.89543 3 6 3H13C14.1046 3 15 3.89543 15 5V8.0625M11 12H21M21 12L18.5 9.5M21 12L18.5 14.5" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                            </span>
+                             Wylogować się
+                        </a>
+                    </li>
                 </ul>
             </div>
 

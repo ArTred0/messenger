@@ -1,0 +1,59 @@
+.mbtn {
+    color: #fff;
+    background: blue;
+    transition: all linear 0.2s;
+}
+.mbtn:hover {
+    color: #fff;
+    background: #0000eb;
+}
+.mbtn:active {
+    color: #fff !important;
+    background: #0000d7 !important;
+}
+.mbtn.show {
+    color: #fff;
+    background: blue;
+}
+
+
+.dropdown-item:active {
+    background-color: blue !important;
+}
+
+
+
+.is-selected-identifier {
+    background: blue;
+}
+
+.my-message-body{
+    background: blue;
+}
+
+
+.sendbtn {
+    background: blue;
+}
+.sendbtn:hover {
+    background: #0000eb;
+}
+.sendbtn:active {
+    background: #0000eb !important;
+}
+
+
+.create-chat-btn {
+    background: blue;
+}
+.create-chat-btn:hover {
+    background: #0000eb;
+}
+.create-chat-btn:active {
+    background: #0000eb !important;
+}
+
+
+.admin-highlight {
+    color: blue;
+}

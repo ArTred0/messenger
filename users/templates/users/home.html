@@ -11,22 +11,40 @@
         {% if chats %}
             
             {% for chat in chats %}
-                <a href="{% url 'users:chat' chat.nazwa %}" class="chat-href">
+                <div>
                     <div class="m-3 d-flex shadow chat-preview">
                         <div class="d-flex chat-icon-n-name">
-                            <img src="{{ chat.icon.url }}" class="img-fluid rounded chat-icon" alt="Chat icon">
-                            <div class="chat-name">
-                                <h6>{{ chat.nazwa }}</h6>
-                                {% if user.ostatni_czat == chat.nazwa %}
-                                    <div class="is-selected-identifier"></div>
-                                {% endif %}
-                            </div>
+                            
+                            {% if chat.czy_grupa %}
+                                <a href="{% url 'users:chat-info' chat.id %}">
+                                    <img src="{{ chat.ikona.url }}" class="img-fluid rounded chat-icon" alt="Chat icon">
+                                </a>
+                                <a href="{% url 'users:chat' chat.id %}" class="chat-name">
+                                    <h6>{{ chat.nazwa }}</h6>
+                                    {% if request.user.ostatni_czat == chat.id %}
+                                        <div class="is-selected-identifier"></div>
+                                    {% endif %}
+                                </a>
+                            {% else %}
+                                {% with user=chat.uczestnicy.0|get_destination:request.user.id %}
+                                    <a href="{% url 'users:profile' user.username %}" class="d-flex justify-content-between">
+                                        <img src="{{ user.awatar.url }}" class="img-fluid rounded chat-icon"  alt="Awatar">
+                                    </a>
+                                    <a href="{% url 'users:chat' chat.id %}">
+                                        <h6>{{ user.pelne_imie }}</h6>
+                                        {% if request.user.ostatni_czat == chat.id %}
+                                            <div class="is-selected-identifier"></div>
+                                        {% endif %}
+                                    </a>
+                                {% endwith %}
+                            {% endif %}
                         </div>
                         <div class="chat-last-message mt-2">
-                            <p class="m-0 last-message">{{ chat|get_last_message }}</p>
+                            <p class="m-0 last-message">{{ chat|get_last_message|truncatechars:50 }}</p>
                         </div>
                     </div>
-                </a>
+
+                </div>
             {% endfor %}
 
         {% else %}
@@ -39,7 +57,9 @@
 
         <button type="button" class="btn create-chat-btn shadow-lg" data-bs-toggle="modal"
             data-bs-target="#chatCreationModal">
-            <img src="{% static 'img/pen-field.svg' %}" alt="pen" class="pen">
+            <svg width="2em" height="2em" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path stroke="#f0f0f0" d="M8 9.00006H6.2C5.0799 9.00006 4.51984 9.00006 4.09202 9.21805C3.71569 9.40979 3.40973 9.71575 3.21799 10.0921C3 10.5199 3 11.08 3 12.2001V17.8001C3 18.9202 3 19.4802 3.21799 19.908C3.40973 20.2844 3.71569 20.5903 4.09202 20.7821C4.51984 21.0001 5.07989 21.0001 6.2 21.0001H17.787C18.9071 21.0001 19.4671 21.0001 19.895 20.7821C20.2713 20.5903 20.5772 20.2844 20.769 19.908C20.987 19.4802 20.987 18.9202 20.987 17.8001V12.0001M6 15.0001H6.01M10 15H10.01M11.5189 12.8946L12.8337 12.6347C13.5432 12.4945 13.8979 12.4244 14.2287 12.2953C14.5223 12.1807 14.8013 12.0318 15.06 11.8516C15.3514 11.6487 15.607 11.393 16.1184 10.8816L21.2668 5.73321C21.9541 5.04596 21.9541 3.9317 21.2668 3.24444C20.5796 2.55719 19.4653 2.55719 18.7781 3.24445L13.5416 8.48088C13.0625 8.96004 12.8229 9.19963 12.6294 9.47121C12.4576 9.71232 12.3131 9.97174 12.1986 10.2447C12.0696 10.5522 11.9921 10.8821 11.837 11.5417L11.5189 12.8946Z" stroke="#000000" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
         </button>
 
         <!-- Modal -->
@@ -55,10 +75,10 @@
             {% for message_ in messages_ %}
                 {% if message_.nadawca.imie|eq:user.pelne_imie %}
                     <div class="d-flex message flex-row-reverse">
-                        <div class="my-pre-mes-av">
-                            <img src="{{ user.avatar.url }}" class="img-fluid" alt="Avatar">
-                        </div>
-                        <div class="my-message-body shadow-sm border border-black" onclick="delete_message(this)">
+                        {% comment %} <div class="my-pre-mes-av">
+                            <img src="{{ user.awatar.url }}" class="img-fluid" alt="Avatar">
+                        </div> {% endcomment %}
+                        <div class="my-message-body shadow-sm" onclick="delete_message(this)">
                             <input type="hidden" value="{{ message_.id }}">
                             <p>{{ message_.tekst }}</p>
                             <div class="time-sended my-time-sended">
@@ -69,10 +89,10 @@
                 {% else %}
                     <div class="d-flex message">
                         <div class="pre-mes-av">
-                            <img src="{{ message_.nadawca.avatar }}" class="img-fluid" alt="Avatar">
+                            <img src="{{ message_.nadawca.id|get_avatar }}" class="img-fluid" alt="Avatar">
                         </div>
 
-                        <div class="message-body shadow-sm border border-black" onclick="delete_message(this)">
+                        <div class="message-body shadow-sm" onclick="delete_message(this)">
                             <input type="hidden" value="{{ message_.id }}">
                             <p class="message-sender">{{ message_.nadawca.imie }}</p>
                             <p>{{ message_.tekst }}</p>
@@ -101,12 +121,9 @@
         <hr>
         <form action="/" method="post">
             {% csrf_token %}
-            <!-- <div>
-                <input type="file" class="image-input" accept="image/jpeg, image/png" placeholder="0">
-            </div> -->
             <div class="d-flex">
-                <input type="text" class="form-control" placeholder="Napisz wiadomość tu..." name="message_text"{% if not user.ostatni_czat %} disabled{% endif %}>
-                <button type="submit" class="btn sendbtn"{% if not user.ostatni_czat %} disabled{% endif %}>➤</button>
+                <input type="text" class="form-control" placeholder="Napisz wiadomość tu..." name="message_text"{% if not request.user.ostatni_czat %} disabled{% endif %}>
+                <button type="submit" class="btn sendbtn"{% if not request.user.ostatni_czat %} disabled{% endif %}>➤</button>
             </div>
         </form>
     </div>

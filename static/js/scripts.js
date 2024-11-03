@@ -1,8 +1,35 @@
-function send_req_and_reload(slug, arg) {
+function send_req_and_reload(slug, arg, arg2) {
     const xhr = new XMLHttpRequest();
-    xhr.open("GET", `/${slug}/${arg}`, true);
+    if (arg2){
+        xhr.open("GET", `/${slug}/${arg}/${arg2}`, true);
+    } else {
+        xhr.open("GET", `/${slug}/${arg}`, true);
+    }
     xhr.onload = function() {
         window.location.reload();
+    }
+    xhr.send();
+}
+
+function send_req_and_go_home(slug, arg, arg2) {
+    const xhr = new XMLHttpRequest();
+    if (arg2){
+        xhr.open("GET", `/${slug}/${arg}/${arg2}`, true);
+    } else {
+        xhr.open("GET", `/${slug}/${arg}`, true);
+    }
+    xhr.onload = function() {
+        window.location.assign('/');
+    }
+    xhr.send();
+}
+
+function send_req_and_do_nothing(slug, arg, arg2) {
+    const xhr = new XMLHttpRequest();
+    if (arg2){
+        xhr.open("GET", `/${slug}/${arg}/${arg2}`, true);
+    } else {
+        xhr.open("GET", `/${slug}/${arg}`, true);
     }
     xhr.send();
 }
@@ -12,7 +39,7 @@ function delete_message(message) {
     let answ = confirm('Chcesz usunąć tą wiadomość?');
     console.log(answ)
     if (answ) {
-        send_req_and_reload('delete_message', message.querySelector('input').value)
+        send_req_and_reload('delete-message', message.querySelector('input').value)
     }
 }
 
@@ -36,7 +63,7 @@ function search_user() {
     const xhr = new XMLHttpRequest();
     const username = document.getElementById('user_search').value;
     if (username) {
-        xhr.open("GET", `/search_user/${username}`, true);
+        xhr.open("GET", `/search-user/${username}`, true);
         xhr.onload = function() {
             const cont = document.getElementById('userListCont');
             const submitCont = document.createElement('div');
@@ -88,32 +115,136 @@ function search_user() {
     
 }
 
+function search_chat() {
+    console.log('searching a chats...')
+    const xhr = new XMLHttpRequest();
+    const name = document.getElementById('chat_search').value;
+    if (name) {
+        xhr.open("GET", `/search-chat/${name}`, true);
+        xhr.onload = function() {
+            const cont = document.getElementById('chatListCont');
+            while (cont.firstChild) {
+                cont.removeChild(cont.firstChild);
+            }
+
+            const p = document.createElement('p');
+            p.innerHTML = 'Wyniki:';
+            p.style = "color: #969696; width: auto;";
+            cont.appendChild(p);
+
+            if (xhr.responseText) {
+                const data = JSON.parse(xhr.responseText);
+                for (const chat of data['0']) {
+                    const row = document.createElement('div');
+                    row.className = 'chat-res-card shadow';
+                    row.onclick = function() {
+                        send_req_and_reload('enter-chat', chat.id)
+                    }
+                    const img = document.createElement('img');
+                    img.className = 'img-fluid rounded';
+                    img.src = chat.img;
+                    const col = document.createElement('div');
+                    col.className = 'd-flex flex-column';
+                    const h6 = document.createElement('h6');
+                    h6.innerHTML = chat.name;
+                    col.appendChild(h6);
+                    usrs = document.createElement('h6');
+                    usrs.style = 'color: #969696;';
+                    usrs.innerHTML = `${chat.users} uczęstników`;
+                    col.appendChild(usrs);
+                    row.appendChild(img);
+                    row.appendChild(col);
+                    cont.appendChild(row);
+                }
+            } else {
+                const c = document.createElement('div');
+                c.innerHTML = `Brak wyników dla zapytania "${name}"`
+                cont.appendChild(c);
+            }
+
+        }
+        xhr.send();
+    }
+    
+}
+
 
 function accept_friend(id) {
-    send_req_and_reload('accept_friend', id)
+    send_req_and_reload('accept-friend', id)
 }
 
 function reject_friend(id) {
-    send_req_and_reload('reject_friend', id)
+    send_req_and_reload('reject-friend', id)
 }
 
 function ask_delete_friend(id, name) {
-    if (confirm(`Czy chesz usunąć ${name} z listy przyjaciele?`)) {
-        send_req_and_reload('delete_friend', id)
-    }
+    if (confirm(`Czy chesz usunąć ${name} z listy przyjaciele?`))
+        send_req_and_reload('delete-friend', id)
 }
 
 function ask_cancel_request(id, name) {
-    if (confirm(`Czy chcesz anulować zapyt użytkowniky ${name} o dodaniu w przyjaciele?`)) {
-        send_req_and_reload('cancel_request', id)
+    if (confirm(`Czy chcesz anulować zapyt użytkowniky ${name} o dodaniu w przyjaciele?`))
+        send_req_and_reload('cancel-request', id)
+}
+
+
+
+function ask_remove_member(group_id, user_id, name, group) {
+    if (confirm(`Czy chcesz usunąć użytkownika ${name} z grupy ${group}?`))
+        send_req_and_reload('remove-member', group_id, user_id);
+}
+
+function ask_delete_group(id, name) {
+    if (confirm(`Czy chcesz usunąć grupę ${name} na stalo? To polecenie jest nieodwrotnym!`))
+        if (prompt("Dla podtwierdzenia wprowadź nazwę grupy:") == name)
+            send_req_and_go_home('delete-group', id)
+}
+
+function ask_leave_group(id, name) {
+    if (confirm(`Czy chesz opuścić grupę ${name}?`)) {
+        send_req_and_do_nothing('leave-group', id)
+        window.location.assign('/')
+        window.reload()
+    }
+}
+
+function toggle_theme(btn) {
+    const main_link = document.getElementById('mainThemeLink');
+    const prof_link = document.getElementById('profileLink');
+    html = document.getElementById('html');
+    if ('light.css' === main_link.href.split('/')[5]) {
+        html.setAttribute('data-bs-theme', 'dark')
+        if (prof_link)
+            prof_link.href = '/static/css/profile_dark.css'
+        main_link.href = '/static/css/dark.css';
+        btn.innerHTML = '<span></span>Ciemny';
+        send_req_and_do_nothing('toggle-theme', 'dark')
+
+    } else {
+        html.setAttribute('data-bs-theme', 'light')
+        if (prof_link)
+            prof_link.href = '/static/css/profile_light.css'
+        main_link.href = '/static/css/light.css';
+        btn.innerHTML = '<span></span>Jasny';
+        send_req_and_do_nothing('toggle-theme', 'light')
     }
 }
 
 
 
-document.getElementById('user_search').addEventListener('keyup', function(event) {
+u_s = document.getElementById('user_search')
+if (u_s) {
+    u_s.addEventListener('keyup', function(event) {
+        if (event.key === 'Enter') {
+            search_user()
+        }
+    });
+}
+    
+document.getElementById('chat_search').addEventListener('keyup', function(event) {
     if (event.key === 'Enter') {
-        search_user()
+        search_chat()
     }
 });
+
 

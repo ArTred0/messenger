@@ -1,3 +1,50 @@
+a {
+    color: #000;
+    text-decoration: none;
+}
+
+#infoIcon circle, #infoIcon line {
+    stroke: #000
+}
+#adminPanelIcon {
+    fill: #000;
+}
+#logoutIcon path {
+    stroke: #000;
+}
+#themeToggle {
+    display: flex;
+    align-items: center;
+    padding-left: 0;
+    margin-right: 2em;
+    height: 2.5em;
+    color: #fff;
+    background: #00b5f7;
+    overflow: clip;
+    transition: all ease 0.1s;
+}
+#themeToggle span {
+    position: relative;
+    left: -1.2em;
+    bottom: -1em;
+    width: 3em;
+    height: 3em;
+    border-radius: 50%;
+    background: #ead12e;
+    transition: all ease 0.1s;
+}
+
+.background {
+    background: #dedede;
+}
+
+.shrinky {
+    transition: all ease .3s;
+}
+.shrinky:hover {
+    transform: rotateY(15deg);
+}
+
 .m-form-cont {
     background-color: #fff;
     margin: 10vh 30vw;
@@ -9,16 +56,11 @@
     margin-right: 1em;
 }
 
-/* .m-rad-lbl {
-    margin-right: 0.8em;
-} */
-
 nav {
     height: 5em;
     width: 100vw;
     padding: 0.5em;
     justify-content: space-between;
-    /* align-items: center; */
     background-color: #d2d2d2;
 }
 
@@ -27,19 +69,7 @@ nav img {
     transition: all ease 0.4s;
 }
 nav img:hover {
-    transform: scale(1.1);
-}
-
-nav .dropdown {
-    align-self: center;
-    color: blueviolet;
-}
-
-.circle {
-    height: 3.5em;
-    width: 3.5em;
-    border-radius: 50%;
-    background-color: blueviolet;
+    transform: scale(0.9);
 }
 
 aside {
@@ -64,23 +94,18 @@ aside {
     color: #969696
 }
 
-.chat-href {
-    color: black;
-    text-decoration: none;
-}
-
 .chat-preview {
     width: 90%;
     margin: 5%;
     padding: 0.8em;
-    background-color: #f0f0f0;
+    background-color: #fff;
     border-radius: 1em;
     flex-direction: column;
     transition: all ease 0.3s;
 }
 
 .chat-preview:hover {
-    transform: scale(1.04);
+    transform: scale(0.96);
 }
 
 .chat-icon-n-name {
@@ -105,7 +130,6 @@ aside {
 .is-selected-identifier {
     height: 0.25em;
     margin-top: 0.4em;
-    background-color: blueviolet;
 }
 
 .last-message {
@@ -196,7 +220,6 @@ main {
 
 
 .my-message-body {
-    background: blueviolet;
     color: white;
     padding: 0.8em;
     border-radius: 1em;
@@ -229,7 +252,6 @@ main {
 }
 
 .sendbtn {
-    background: blueviolet;
     color: white;
     border-radius: 50%;
     margin-left: 0.7em;
@@ -238,12 +260,10 @@ main {
 
 
 .sendbtn:hover {
-    background: #8021C4;
     color: white;
 }
 
 .sendbtn:active {
-    background-color: #8021C4 !important;
     color: white !important;
 }
 
@@ -251,7 +271,6 @@ main {
     position: fixed;
     left: 1em;
     bottom: 1em;
-    background: blueviolet;
     color: white;
     width: 3em;
     height: 3em;
@@ -301,10 +320,14 @@ main {
     background-color: #aaa;
     border-radius: 50%;
     padding: 0.2em;
+    margin-left: 1em;
     height: 2.3em;
     width: 2.3em;
     cursor: pointer;
     transition: all ease 0.2s;
+}
+.pencil-btn:hover {
+    transform: scale(0.98);
 }
 
 .w-100 {
@@ -313,6 +336,10 @@ main {
 
 .w-33 {
     width: 33.333333%;
+}
+
+.h-100 {
+    height: 100%;
 }
 
 .bold {
@@ -330,4 +357,79 @@ main {
     width: 2.2em;
     padding: 0.3em;
     color: #fff
+}
+
+
+
+
+.chat-res-card {
+    display: flex;
+    justify-content: space-around;
+    padding: 0.5em;
+    margin-bottom: 0.8em;
+    border-radius: 0.7em;
+    background: #fff;
+    cursor: pointer;
+    transition: all ease 0.2s;
+}
+.chat-res-card:hover {
+    transform: scale(0.98);
+}
+.chat-res-card img {
+    height: 3em;
+}
+
+.modal-content {
+    max-height: calc(100vh - 3.5rem);
+}
+.modal-body {
+    overflow-y: auto;
+}
+.tab-content {
+    overflow-y: auto;
+}
+
+.mini-card {
+    display: flex;
+    justify-content: space-evenly;
+    background-color: #fff;
+    border-radius: 1.4em;
+    margin-bottom: 1.4em;
+    padding: 0.8em;
+    min-height: 4.6em;
+    color: #000;
+    text-decoration: none;
+    transition: all ease 0.3s;
+}
+
+.mini-card img {
+    max-height: 3.5em;
+}
+
+.mini-card:hover, .mini-card-req:hover {
+    transform: scale(0.97);
+}
+
+.friend_avatar {
+    height: 3em;
+    margin-right: 0.8em;
+}
+
+.mini-card h6, .mini-card-req h6 {
+    margin: auto 0;
+    height: auto;
+
+}
+
+
+.gear {
+    margin: auto 0;
+    cursor: pointer;
+    transition: all ease-out 0.3s;
+}
+.gear:hover {
+    transform: rotate(120deg);
+}
+.gear svg path {
+    fill: "#0F1729";
 }

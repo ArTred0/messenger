@@ -1,0 +1,121 @@
+main {
+    left: 0;
+    width: 100%;
+    height: calc(100vh - 5em);
+    background-color: #e6e6e6;
+}
+
+.profile-card {
+    background-color: #fff;
+    margin: 10vh 13vw;
+    border-radius: 2em;
+    padding: 2em;
+}
+
+.profile-img {
+    height: 11em;
+    margin-bottom: 2em;
+    /* border-radius: 30%; */
+}
+
+/* h2 {
+    margin: ;
+} */
+
+h5 {
+    font-weight: 400;
+    margin-bottom: 1.5em;
+}
+
+
+
+.mini-card-req {
+    display: flex;
+    flex-direction: column;
+    border-radius: 1.4em;
+    margin-bottom: 1.4em;
+    padding: 0.8em;
+    min-height: 4.6em;
+    transition: all ease 0.3s;
+}
+
+
+.add-fr-btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 1.4em;
+    margin-bottom: 1.4em;
+    min-height: 4.6em;
+    background-color: #fff;
+    border: none;
+    transition: all ease 0.3s;
+}
+.add-fr-btn:hover {
+    transform: scale(1.05);
+}
+.plus {
+    fill: #000;
+    height: 2.5em !important;
+}
+
+.no-border {
+    border: none;
+}
+
+.delete_friend {
+    cursor: pointer;
+    align-self: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 2em;
+    width: 2em;
+    border-radius: 50%;
+    transition: all ease 0.3s;
+}
+.delete_friend:hover {
+    transform: scale(1.1);
+    background-color: #bb2b3b;
+}
+.delete_friend svg {
+    transition: all ease 0.2s;
+}
+.delete_friend svg:hover {
+    fill: #fff !important
+}
+
+
+.leave-icon {
+    padding: 0.3em;
+    border-radius: 50%;
+    transition: all ease 0.2s;
+}
+.leave-icon svg {
+    fill: #bb2b3b;
+    cursor: pointer;
+    transition: all ease 0.2s;
+}
+.leave-icon:hover {
+    background: #bb2b3b;
+    transform: scale(1.1);
+}
+.leave-icon svg:hover {
+    fill: #fff
+}
+
+
+.invisible-btn {
+    height: auto;
+    width: auto;
+    background: #fff;
+    border: none;
+    transition: all ease 0.2s;
+}
+.invisible-btn:hover {
+    transform: scale(1.05);
+}
+.invisible-btn:active {
+    transform: scale(0.9);
+}
+

@@ -10,6 +10,10 @@ def eq(value, arg):
     return True if value == arg else False
 
 @register.filter
+def get_avatar(id):
+    return User.objects.get(id=id).awatar.url
+
+@register.filter
 def get_last_message(chat):
     if chat.wiadomosci['0']:
         last_message = chat.wiadomosci['0'][-1]
@@ -18,14 +22,6 @@ def get_last_message(chat):
     
     return f"{last_message['nadawca']['imie']}: {last_message['tekst']}" if last_message else ""
 
-# @register.filter
-# def czas(czas_int):
-#     return strftime('%H:%M | %d.%m.%Y')
-
-# @register.filter
-# def avatar(username):
-#     user = User.objects.get(username=username)
-#     return user.avatar.url
 
 @register.filter
 def imie(id):
@@ -33,9 +29,11 @@ def imie(id):
     return user.pelne_imie()
 
 
-# @register.filter
-# def user(id):
-#     return User.objects.get(id=id)
+@register.filter
+def get_destination(seq, usr):
+    seq.remove(usr)
+    return User.objects.get(id=seq[0])
+
 
 
 @register.filter

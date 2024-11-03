@@ -1,0 +1,59 @@
+.mbtn {
+    color: #fff;
+    background: #58d3db;
+    transition: all linear 0.2s;
+}
+.mbtn:hover {
+    color: #fff;
+    background: #44BFC7;
+}
+.mbtn:active {
+    color: #fff !important;
+    background: #30ABB3 !important;
+}
+.mbtn.show {
+    color: #fff;
+    background: #58d3db;
+}
+
+
+.dropdown-item:active {
+    background-color: #58d3db !important;
+}
+
+
+
+.is-selected-identifier {
+    background: #58d3db;
+}
+
+.my-message-body{
+    background: #58d3db;
+}
+
+
+.sendbtn {
+    background: #58d3db;
+}
+.sendbtn:hover {
+    background: #44BFC7;
+}
+.sendbtn:active {
+    background: #44BFC7 !important;
+}
+
+
+.create-chat-btn {
+    background: #58d3db;
+}
+.create-chat-btn:hover {
+    background: #44BFC7;
+}
+.create-chat-btn:active {
+    background: #44BFC7 !important;
+}
+
+
+.admin-highlight {
+    color: #58d3db;
+}

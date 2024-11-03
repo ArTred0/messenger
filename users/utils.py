@@ -5,36 +5,29 @@ from django.contrib.postgres.search import (
     SearchHeadline,
 )
 
-from users.models import User
+from users.models import User, Chat
 
 
-def q_search(query):
-    # if query.isdigit() and len(query) <= 5:
-    #     return User.objects.filter(id=int(query))
-
+def user_search(query):
     vector = SearchVector("imie", "nazwisko")
     query = SearchQuery(query)
 
     result = (
         User.objects.annotate(rank=SearchRank(vector, query))
-        .filter(rank__gt=0)
+        .filter(rank__gt=0.01)
         .order_by("-rank")
     )
-    result = result.annotate(
-        headline=SearchHeadline(
-            "imie",
-            query,
-            start_sel='<span style="background-color: yellow">',
-            stop_sel="</span>",
-        )
-    )
-    result = result.annotate(
-        bodyline=SearchHeadline(
-            "nazwisko",
-            query,
-            start_sel='<span style="background-color: yellow">',
-            stop_sel="</span>",
-        )
-    )
-
     return result
+
+
+def chat_search(query):
+    # vector = SearchVector("nazwa")
+    # query = SearchQuery(query)
+
+    # result = (
+    #     Chat.objects.annotate(rank=SearchRank(vector, query))
+    #     .filter(rank__gt=0)
+    #     .order_by("-rank")
+    # )
+    # return result
+    return Chat.objects.filter(nazwa__icontains=query)

@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm, UserChangeForm
 
-from users.models import User
+from users.models import Chat, User
 
 
 class UserRegistrationForm(UserCreationForm):
@@ -42,3 +42,18 @@ class UserLoginForm(AuthenticationForm):
     nazwisko = forms.CharField(max_length=30)
     # username = forms.CharField()
     password = forms.CharField()
+
+
+# class ChatCreationForm(forms.Form):
+    
+#     class Meta:
+#         model = Chat
+#         fields = [
+#             'nazwa',
+#             'ikona',
+#             'uczestnicy',
+#         ]
+    
+#     nazwa = forms.CharField()
+#     ikona = forms.FileField(required=False)
+#     uczestnicy = forms.JSONField()
