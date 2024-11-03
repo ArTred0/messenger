@@ -1,46 +1,179 @@
-function send_req_and_reload(slug, arg, arg2) {
+function send_req_and_reload(url) {
     const xhr = new XMLHttpRequest();
-    if (arg2){
-        xhr.open("GET", `/${slug}/${arg}/${arg2}`, true);
-    } else {
-        xhr.open("GET", `/${slug}/${arg}`, true);
-    }
+    xhr.open("GET", url, true);
     xhr.onload = function() {
-        window.location.reload();
+        window.location.reload()
     }
     xhr.send();
 }
 
-function send_req_and_go_home(slug, arg, arg2) {
+function send_req_and_go_home(url) {
     const xhr = new XMLHttpRequest();
-    if (arg2){
-        xhr.open("GET", `/${slug}/${arg}/${arg2}`, true);
-    } else {
-        xhr.open("GET", `/${slug}/${arg}`, true);
-    }
+    xhr.open("GET", url, true);
     xhr.onload = function() {
         window.location.assign('/');
     }
     xhr.send();
 }
 
-function send_req_and_do_nothing(slug, arg, arg2) {
+function send_req_and_do_nothing(url) {
     const xhr = new XMLHttpRequest();
-    if (arg2){
-        xhr.open("GET", `/${slug}/${arg}/${arg2}`, true);
-    } else {
-        xhr.open("GET", `/${slug}/${arg}`, true);
+    xhr.open("GET", url, true);
+    xhr.send();
+}
+
+function send_req_and_do_sth(url, func=function(){}) {
+    const xhr = new XMLHttpRequest();
+    xhr.open("GET", url, true);
+    xhr.onload = function() {
+        func(JSON.parse(xhr.response))
     }
     xhr.send();
 }
 
 
-function delete_message(message) {
-    let answ = confirm('Chcesz usunąć tą wiadomość?');
-    console.log(answ)
-    if (answ) {
-        send_req_and_reload('delete-message', message.querySelector('input').value)
+function post_data(url, data, csrf, func=function(){}) {    
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", url, true);
+    xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+    xhr.setRequestHeader("X-CSRFToken", csrf);
+    xhr.onload = function() {
+        func(JSON.parse(xhr.response))
     }
+    xhr.send(JSON.stringify(data));
+}
+
+
+function render_new_messages(data) {
+    const user = document.getElementById('sender_name').value;
+    if (data) {
+        for (message of data['0']) {
+            if (message['nadawca']['imie'] != user) {
+                if (document.getElementsByTagName('main')[0].getElementsByClassName('all-center')) {
+                    document.getElementsByTagName('main')[0].removeChild(document.getElementsByTagName('main')[0].getElementsByClassName('all-center')[0])
+                }
+                const div1 = document.createElement('div');
+                div1.className = 'd-flex message flex-row-reverse';
+                const div2 = document.createElement('div');
+                div2.className = 'message-body shadow-sm';
+                div2.onclick = function() {
+                    change_message(div2);
+                };
+                const ms_id = document.createElement('input');
+                ms_id.type = 'hidden';
+                ms_id.value = message['id'];
+                const p = document.createElement('p');
+                p.innerHTML = message['tekst'];
+                const time_div = document.createElement('div');
+                time_div.className = 'time-sended time-sended';
+                const time_sended = document.createElement('p');
+                time_sended.innerHTML = message['czas_wysylki'];
+                time_div.appendChild(time_sended)
+                div2.appendChild(ms_id);
+                div2.appendChild(p);
+                div2.appendChild(time_div);
+                div1.appendChild(div2);
+                document.getElementsByTagName('main')[0].appendChild(div1);
+            }
+        }
+    }
+}
+
+
+
+function render_sended(message) {
+    if (document.getElementsByTagName('main')[0].getElementsByClassName('all-center')) {
+        document.getElementsByTagName('main')[0].removeChild(document.getElementsByTagName('main')[0].getElementsByClassName('all-center')[0])
+    }
+    console.log(message)
+    const div1 = document.createElement('div');
+    div1.className = 'd-flex message flex-row-reverse';
+    const div2 = document.createElement('div');
+    div2.className = 'my-message-body shadow-sm';
+    div2.onclick = function() {
+        change_message(div2);
+    };
+    const ms_id = document.createElement('input');
+    ms_id.type = 'hidden';
+    ms_id.value = message['id'];
+    const p = document.createElement('p');
+    p.innerHTML = message['tekst'];
+    const time_div = document.createElement('div');
+    time_div.className = 'time-sended my-time-sended';
+    const time_sended = document.createElement('p');
+    time_sended.innerHTML = message['czas_wysylki'];
+    time_div.appendChild(time_sended)
+    div2.appendChild(ms_id);
+    div2.appendChild(p);
+    div2.appendChild(time_div);
+    div1.appendChild(div2);
+    document.getElementsByTagName('main')[0].appendChild(div1);
+}
+
+
+
+function send_message(text) {
+    if (text) {
+        const data = {
+            'tekst': text
+        };
+        post_data(
+            `/site/js/api/send-message/`,
+            data,
+            document.getElementsByName('csrfmiddlewaretoken')[2].value,
+            render_sended    
+        );
+        document.getElementById('message_input').value = '';
+        // render_sended(resp);
+    }
+}
+
+
+function change_message(message) {
+    const answ = confirm('Usunąć wiadomość - OK?\nZmienić tekst - Cancel');
+    if (answ) {
+        send_req_and_reload(`/site/js/api/delete-message/${message.querySelector('input').value}`);
+    } else {
+        const ms = document.getElementsByClassName('changing')[0];
+        console.log(ms)
+        if (ms) {
+            console.log(ms);
+            const p = document.createElement('p');
+            p.innerHTML = ms.querySelector('.text-change-inp').value;
+            ms.className = 'my-message-body shadow-sm';
+            ms.onclick = function() {
+                change_message(ms)
+            };
+            ms.replaceChild(p, ms.querySelector('.text-change-inp'));
+        }
+        const input = document.createElement('input');
+        input.addEventListener('keyup', function(event) {
+            if (event.key === 'Enter') {
+                change_message_text(message);
+            }
+        });
+        input.className = 'form-control text-change-inp';
+        input.value = message.querySelector('p').innerHTML;
+        message.onclick = null;
+        message.className = 'my-message-body shadow-sm changing';
+        message.replaceChild(input, message.querySelector('p'));
+    }
+}
+
+function change_message_text(message) {
+    const inp = message.querySelector('.text-change-inp')
+    const p = document.createElement('p')
+    p.innerHTML = inp.value;
+    message.replaceChild(p, inp);
+    const data = {
+        'ms_id': message.querySelector('input').value,
+        'new_text': inp.value
+    }
+    post_data(
+        '/site/js/api/change-message/',
+        data,
+        document.getElementsByName('csrfmiddlewaretoken')[2].value)
+    // send_req_and_do_nothing(`/site/js/api/change-message`)
 }
 
 function switch_hidden(switcher, id) {
@@ -63,7 +196,7 @@ function search_user() {
     const xhr = new XMLHttpRequest();
     const username = document.getElementById('user_search').value;
     if (username) {
-        xhr.open("GET", `/search-user/${username}`, true);
+        xhr.open("GET", `/site/js/api/search-user/${username}`, true);
         xhr.onload = function() {
             const cont = document.getElementById('userListCont');
             const submitCont = document.createElement('div');
@@ -120,7 +253,7 @@ function search_chat() {
     const xhr = new XMLHttpRequest();
     const name = document.getElementById('chat_search').value;
     if (name) {
-        xhr.open("GET", `/search-chat/${name}`, true);
+        xhr.open("GET", `/site/js/api/search-chat/${name}`, true);
         xhr.onload = function() {
             const cont = document.getElementById('chatListCont');
             while (cont.firstChild) {
@@ -170,39 +303,39 @@ function search_chat() {
 
 
 function accept_friend(id) {
-    send_req_and_reload('accept-friend', id)
+    send_req_and_reload(`/site/js/api/accept-friend/${id}`)
 }
 
 function reject_friend(id) {
-    send_req_and_reload('reject-friend', id)
+    send_req_and_reload(`/site/js/api/reject-friend/${id}`)
 }
 
 function ask_delete_friend(id, name) {
     if (confirm(`Czy chesz usunąć ${name} z listy przyjaciele?`))
-        send_req_and_reload('delete-friend', id)
+        send_req_and_reload(`/site/js/api/delete-friend/${id}`)
 }
 
 function ask_cancel_request(id, name) {
     if (confirm(`Czy chcesz anulować zapyt użytkowniky ${name} o dodaniu w przyjaciele?`))
-        send_req_and_reload('cancel-request', id)
+        send_req_and_reload(`/site/js/api/cancel-request/${id}`)
 }
 
 
 
 function ask_remove_member(group_id, user_id, name, group) {
     if (confirm(`Czy chcesz usunąć użytkownika ${name} z grupy ${group}?`))
-        send_req_and_reload('remove-member', group_id, user_id);
+        send_req_and_reload(`/site/js/api/remove-member/${group_id}/${user_id}`);
 }
 
 function ask_delete_group(id, name) {
     if (confirm(`Czy chcesz usunąć grupę ${name} na stalo? To polecenie jest nieodwrotnym!`))
         if (prompt("Dla podtwierdzenia wprowadź nazwę grupy:") == name)
-            send_req_and_go_home('delete-group', id)
+            send_req_and_go_home(`/site/js/api/delete-group/${id}`)
 }
 
 function ask_leave_group(id, name) {
     if (confirm(`Czy chesz opuścić grupę ${name}?`)) {
-        send_req_and_do_nothing('leave-group', id)
+        send_req_and_do_nothing(`/site/js/api/leave-group/${id}`)
         window.location.assign('/')
         window.reload()
     }
@@ -231,6 +364,20 @@ function toggle_theme(btn) {
 }
 
 
+if (window.location.pathname == '/') {
+    document.getElementById('message_input').addEventListener('keyup', function(event) {
+        if (event.key == 'Enter') {
+            send_message(document.getElementById('message_input').value)
+        }
+    });
+
+    interval = setInterval(() => {
+        send_req_and_do_sth(
+            `/site/js/api/check-new-messages/${document.getElementsByClassName('message').length}`,
+            render_new_messages)
+    }, 3000)
+}
+
 
 u_s = document.getElementById('user_search')
 if (u_s) {
@@ -246,5 +393,6 @@ document.getElementById('chat_search').addEventListener('keyup', function(event)
         search_chat()
     }
 });
+
 
 

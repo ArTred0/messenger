@@ -42,7 +42,7 @@
             {% if request.user.id in self.adminy.0 %}
                 <form action="" method="post">
                     {% csrf_token %}
-                    <input type="text" class="form-control" value="{{ self.nazwa }}" style="text-align: center; font-size: 1.4em; font-weight: 600;">
+                    <input type="text" class="form-control" name="nazwa" value="{{ self.nazwa }}" style="text-align: center; font-size: 1.4em; font-weight: 600;">
                 </form>
             {% else %}
                 <h2 class="mb-4">{{ self.nazwa }}</h2>
@@ -56,7 +56,7 @@
             {% if user in adminy %}
                 <form action="{% url 'users:chat-info_change' self.id %}" method="post">
                     {% csrf_token %}
-                    <textarea class="form-control mb-2" id="o_sobie" name="o_sobie" rows="4">{{ self.opis }}</textarea>
+                    <textarea class="form-control mb-2" id="opis" name="opis" rows="4">{{ self.opis }}</textarea>
                     <div class="d-flex justify-content-end">
                         <button type="submit" class="btn mbtn">Zmień</button>                        
                     </div>

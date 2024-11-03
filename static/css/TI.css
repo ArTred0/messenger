@@ -57,3 +57,10 @@
 .admin-highlight {
     color: blueviolet;
 }
+
+.text-change-inp {
+    background-color: #7617CE !important;
+}
+.text-change-inp:focus {
+    background-color: #7617CE !important;
+}
